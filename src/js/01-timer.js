@@ -4,9 +4,20 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 // Описаний у документації
-import iziToast from "izitoast";
+import iziToast from 'izitoast';
 // Додатковий імпорт стилів
-import "izitoast/dist/css/iziToast.min.css";
+import 'izitoast/dist/css/iziToast.min.css';
+
+let userSelectedDate;
+const timeInput = document.querySelector('#datetime-picker');
+const startButton = document.querySelector('button[data-start]');
+const daysTimer = document.querySelector('span[data-days]');
+const hoursTimer = document.querySelector('span[data-hours]');
+const minutesTimer = document.querySelector('span[data-minutes]');
+const secondsTimer = document.querySelector('span[data-seconds]');
+
+startButton.setAttribute('disabled', '');
+timeInput.removeAttribute('disabled', '');
 
 const options = {
   enableTime: true,
@@ -14,7 +25,24 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    userSelectedDate = selectedDates[0];
+    if (userSelectedDate < Date.now()) {
+      startButton.setAttribute('disabled', '');
+      iziToast.error({
+        message: 'Please choose a date in the future',
+        messageColor: '#fff',
+        messageSize: '16px',
+        messageLineHeight: '1.5',
+        backgroundColor: '#ef4040',
+        position: 'topRight',
+        titleColor: '#fff',
+        titleSize: '16px',
+        titleLineHeight: '1.5',
+        iconUrl: '/img/bi_x-octagon.svg',
+      });
+    } else {
+      startButton.removeAttribute('disabled');
+    }
   },
 };
 
@@ -41,4 +69,31 @@ function convertMs(ms) {
 // console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
 // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 
+function addLeadingZero(value) {
+  return value.toString().padStart(2, '0');
+}
+
 flatpickr('#datetime-picker', options);
+
+startButton.addEventListener('click', () => {
+  timeInput.setAttribute('disabled', '');
+  startButton.setAttribute('disabled', '');
+  setInterval(() => {
+    if (userSelectedDate > Date.now()) {
+      daysTimer.textContent = addLeadingZero(
+        convertMs(userSelectedDate - Date.now()).days
+      );
+      hoursTimer.textContent = addLeadingZero(
+        convertMs(userSelectedDate - Date.now()).hours
+      );
+      minutesTimer.textContent = addLeadingZero(
+        convertMs(userSelectedDate - Date.now()).minutes
+      );
+      secondsTimer.textContent = addLeadingZero(
+        convertMs(userSelectedDate - Date.now()).seconds
+      );
+    } else {
+      return;
+    }
+  }, 1000);
+});
