@@ -8,6 +8,8 @@ import iziToast from 'izitoast';
 // Додатковий імпорт стилів
 import 'izitoast/dist/css/iziToast.min.css';
 
+import svgError from "/img/bi_x-octagon.svg";
+
 let userSelectedDate;
 const timeInput = document.querySelector('#datetime-picker');
 const startButton = document.querySelector('button[data-start]');
@@ -38,7 +40,7 @@ const options = {
         titleColor: '#fff',
         titleSize: '16px',
         titleLineHeight: '1.5',
-        iconUrl: '/img/bi_x-octagon.svg',
+        iconUrl: svgError,
       });
     } else {
       startButton.removeAttribute('disabled');

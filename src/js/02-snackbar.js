@@ -3,6 +3,9 @@ import iziToast from 'izitoast';
 // Додатковий імпорт стилів
 import 'izitoast/dist/css/iziToast.min.css';
 
+import svgError from '/img/bi_x-octagon.svg';
+import svgSuccess from '/img/group.svg';
+
 const fulfilledButton = document.querySelector("input[value='fulfilled']");
 const ourForm = document.querySelector('.form');
 const rejectedButton = document.querySelector("input[value='rejected']");
@@ -29,7 +32,7 @@ document.querySelector('button').addEventListener('click', event => {
         title: 'OK',
         message: `Fulfilled promise in ${delay}ms`,
         position: 'topRight',
-        iconUrl: '/img/group.svg',
+        iconUrl: svgSuccess,
         messageColor: '#fff',
         messageSize: '16px',
         messageLineHeight: '1.5',
@@ -45,7 +48,7 @@ document.querySelector('button').addEventListener('click', event => {
         title: 'Error',
         message: `Rejected promise in ${delay}ms`,
         position: 'topRight',
-        iconUrl: '/img/bi_x-octagon.svg',
+        iconUrl: svgError,
         messageColor: '#fff',
         messageSize: '16px',
         messageLineHeight: '1.5',
